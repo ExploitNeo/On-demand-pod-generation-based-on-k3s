@@ -1,0 +1,20 @@
+# Container images / tar
+*.tar
+*.img
+*.bin
+
+# Agent/spawner IO
+agent-io/
+artifacts/
+
+# Build outputs
+pod-spawner
+*.out
+*.exe
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+__pycache__/
+*.pyc
