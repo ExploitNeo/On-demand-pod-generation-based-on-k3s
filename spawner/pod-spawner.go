@@ -65,7 +65,6 @@ func handleConnection(userConn net.Conn, clientset *kubernetes.Clientset) {
 	log.Printf("Pod %s is running with IP %s", podName, podIP)
 	log.Printf("Spawn complete. Agent pod ready for image injection.")
 
-	// 테스트 끝날 때까지 기다렸다가 삭제
 	if err := waitForPodCompletionAndCleanup(clientset, podName); err != nil {
 		log.Printf("Error while waiting for pod %s completion: %v", podName, err)
 	} else {
@@ -80,7 +79,7 @@ func createDynamicPod(clientset *kubernetes.Clientset, name string) (*v1.Pod, er
         log.Printf("WARNING: CHALLENGE_IMAGE environment variable is empty. Using default image: %s", challengeImage)
     }
 
-    hostPathDir := "/home/zahyun/Documents/OTA/agent-io"
+    hostPathDir := "/home/zahyun/Documents/OTA/k3s/agent-io"
 
     log.Printf("Creating dynamic pod: %s with image: %s", name, challengeImage)
 
