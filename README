@@ -1,8 +1,8 @@
 # On-demand Pod Generation with k3s  
 Dynamic OTA Verification Pods with HostPath-mounted Artifacts
 
-## 📌 Overview
-This project implements an **on-demand dynamic Pod generator** on a k3s cluster.  
+ ## 📌 Overview
+This project implements an on-demand dynamic Pod generator on a k3s cluster.  
 When an external system (or CI/CD) sends a **wake-up (TCP/nc) signal**,  
 the spawner automatically creates a **temporary OTA verification pod (ota-agent)**.
 
@@ -14,47 +14,46 @@ or isolated firmware inspection environments.
 
 ---
 
-## 🏗 Architecture
 
-Host Machine
-│
-├── (1) nc → Pod Spawner Listener (TCP :4321)
-│
-└── Spawner creates "ota-agent-pod-XXXX" (k3s)
-├── hostPath: ./agent-io/in → /in
-└── hostPath: ./agent-io/out → /out
-├── ivi-theme-0.1.tar (OTA Image)
-└── report.txt (Test Results)
-
-
-
-## Build Steps
-#premilinary
+### Build Steps
+premilinary
 MAKE SURE put the image.tar you want to test into agent-io directory
 
 1. podman build
+'''bash
 cd spawner
 podman build -t localhost/ota-spawner:latest .
+podman save -o ota-spawner.tar ota-spawner:latest
 
-cd .. 
+cd ../ota-agent 
 podman build -t localhost/ota-agent:latest .
+podman save -o ota-agent.tar ota-agent:latest
+'''
 
 2. import into k3s
+'''bash
 sudo k3s ctr images import ota-spawner.tar
 sudo k3s ctr images import ota-agent.tar
-
+'''
 
 3. deployment
+'''bash
 cd k3s
 sudo kubectl apply -f deployment.yaml
+'''
 
+'''bash
 4. check
 sudo kubectl get pods -w
+'''
 
+'''bash
 5. wake up pods
-echo "wake" | nc 192.168.130.130 4321
+echo "wake" | nc <your_ip> 4321
+'''
 
 6. check result
+'''bash
 agent-io/out/report.txt
 agent-io/out/artifacts/proc_list.log
-
+'''
