@@ -25,48 +25,48 @@ Make sure to put the OTA image you want to test **inside the `agent-io` director
 ### 🔹 1. Build podman images
 
 #### Spawner
-CODEBLOCK_START bash
+``` bash
 cd spawner
 podman build -t localhost/ota-spawner:latest .
 podman save -o ota-spawner.tar localhost/ota-spawner:latest
-CODEBLOCK_END
+```
 
 #### Agent
-CODEBLOCK_START bash
+``` bash
 cd ../ota-agent
 podman build -t localhost/ota-agent:latest .
 podman save -o ota-agent.tar localhost/ota-agent:latest
-CODEBLOCK_END
+```
 
 ---
 
 ### 🔹 2. Import images into k3s
-CODEBLOCK_START bash
+``` bash
 sudo k3s ctr images import ota-spawner.tar
 sudo k3s ctr images import ota-agent.tar
-CODEBLOCK_END
+```
 
 ---
 
 ### 🔹 3. Deploy the spawner
-CODEBLOCK_START bash
+``` bash
 cd ../k3s
 sudo kubectl apply -f deployment.yaml
-CODEBLOCK_END
+```
 
 ---
 
 ### 🔹 4. Check pods
-CODEBLOCK_START bash
+``` bash
 sudo kubectl get pods -w
-CODEBLOCK_END
+```
 
 ---
 
 ### 🔹 5. Wake the spawner (trigger dynamic pod generation)
-CODEBLOCK_START bash
+``` bash
 echo "wake" | nc <your_ip> 4321
-CODEBLOCK_END
+```
 
 ---
 
