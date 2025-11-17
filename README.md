@@ -18,7 +18,7 @@ or isolated firmware inspection environments.
 
 ### 🔹 0. Preliminary
 Make sure to put the OTA image you want to test **inside the `agent-io` directory**
-(e.g., `agent-io/in/ivi-theme-0.1.tar`)
+(e.g., `agent-io/ivi-theme-0.1.tar`)
 
 ---
 
